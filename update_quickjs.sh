@@ -9,6 +9,8 @@ wget -O quickjs.tar.xz $1
 # Extract the release
 mkdir tmp
 tar xvfC quickjs.tar.xz tmp/
+# Retain CMakeLists.txt for quickjs by copying it to tmp (so it will be copied back)
+cp $SRC_LOCATION/CMakeLists.txt tmp
 # Clear target location
 rm $SRC_LOCATION/*
 # Copy over the sources we care about

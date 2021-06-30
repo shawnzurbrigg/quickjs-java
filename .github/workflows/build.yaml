@@ -18,7 +18,7 @@ jobs:
       matrix:
         os:
           - macOS-latest
-          # TODO: build on 'ubuntu-latest'
+          - ubuntu-latest
           # TODO: build on 'windows-latest'
 
     runs-on: ${{ matrix.os }}
@@ -31,9 +31,12 @@ jobs:
           distribution: 'zulu'
           java-version: 8
 
+      - run: sudo apt-get install libc++-dev
+        if: matrix.os == 'ubuntu-latest'
+
       - name: Build native library
         run: |
-          cmake -S quickjs/jvm/ -B build/jni/ -DQUICKJS_VERSION="$(cat quickjs/common/native/quickjs/VERSION)"
+          cmake -S quickjs/common/native/ -B build/jni/ -DQUICKJS_VERSION="$(cat quickjs/common/native/quickjs/VERSION)"
           cmake --build build/jni/
           mkdir -p quickjs/jvm/src/main/resources/
           cp -v build/jni/libquickjs.* quickjs/jvm/src/main/resources/
